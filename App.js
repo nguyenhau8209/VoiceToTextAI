@@ -2,17 +2,22 @@ import {View, Text, Button} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Voice from '@react-native-voice/voice';
 const App = () => {
+  //state lưu trữ kết quả sau khi chuyển đổi
   const [result, setResult] = useState('');
+  //biến quản lý trạng thái có đang nói hay không
   const [recording, setRecording] = useState(false);
 
+  //Xử lý sự kiện bắt đầu nói
   const speechStartHandler = e => {
     console.log('speech start event ', e);
   };
+
+  //Xử lý sự kiện kết thúc nói
   const speechEndHandler = e => {
     setRecording(false);
     console.log('speech end event ', e);
   };
-
+  //Xử lý kết quả nhận dạng giọng nói thành văn bản
   const speechResultHandler = e => {
     console.log('speech event ', e);
     const text = e.value[0];
@@ -21,10 +26,12 @@ const App = () => {
 
   console.log('result ', result);
 
+  //Xử lý lỗi khi nhận dạng giọng nói
   const speechErrorHandler = e => {
     console.log('speech error event ', e);
   };
 
+  //Bắt đầu ghi âm
   const startRecording = async () => {
     setRecording(true);
     try {
@@ -34,17 +41,18 @@ const App = () => {
     }
   };
 
+  //dừng ghi âm
   const stopRecording = async () => {
     setRecording(false);
     try {
-      await Voice.stop(); //nhan dien tieng viet
+      await Voice.stop();
     } catch (error) {
       console.log('error ', error);
     }
   };
 
   useEffect(() => {
-    //voice handle event
+    //gán các sử lý sự kiện của thư viện voice
     Voice.onSpeechStart = speechStartHandler;
     Voice.onSpeechEnd = speechEndHandler;
     Voice.onSpeechResults = speechResultHandler;
